@@ -23,7 +23,7 @@ An exploit primitive in linux kernel inspired by DirtyPipe (CVE-2022-0847).
 
 **总结一下**，就是需要获取到对Pipe结构体的修改能力，比如可以是slab-1k下的UAF，或是slab-1k下带偏移的（即不是按顺序的直接overflow）越界写。
 
-这样，在kernel >= 5.8中，我们只需修改pipe_buffer中splice页的`flag |= PIPE_BUF_FLAG_CAN_MERGE`即可（有能力可以顺便把offset和len改成0，这样就能从文件的开头开始写）；在kernel < 5.8中，需要先leak一下pipe_buffer中的anon_pipe_ops，然后将splice页的的ops改为anon_pipe_ops（因为<5.8版本中能够merge是看ops的）（有能力依然可以顺便把offset和len改成0）。
+这样，在kernel >= 5.8中，我们只需修改pipe_buffer中splice页的`flag |= PIPE_BUF_FLAG_CAN_MERGE`即可（有能力可以顺便把offset和len改成0，这样就能从文件的开头开始写）；在kernel < 5.8中，需要先leak一下pipe_buffer中的anon_pipe_ops，然后将splice页的的ops改为anon_pipe_ops（因为<5.8版本中能否merge是看ops的）（有能力依然可以顺便把offset和len改成0）。
 
 </br>
 
