@@ -11,7 +11,7 @@ An exploit primitive in linux kernel inspired by DirtyPipe (CVE-2022-0847).
 
 随即我感到自己像个傻子，当时为什么要去修改pipe_buffer的ops做ROP？直接修改pipe_buffer的flags并配合splice不就直接做到任意文件写了嘛！这样就不用leak kaslr，也就不需要对不同内核版本做exploit适配，也不用管gadgets的事情，也不需要绕过SMEP，SMAP，KPTI等保护了。
 
-我马上掏出了之前复现学习CVE-2021-22555及其他涉及pipe_buffer结构体的exploit，稍作修改，马上就能在未打补丁的不同版本内核中利用成功，下面是几个列子：
+我马上掏出了之前复现学习CVE-2021-22555及其他涉及pipe_buffer结构体的exploit，稍作修改，马上就能在未打补丁的不同版本内核中利用成功，下面是几个例子：
 
 - https://github.com/veritas501/CVE-2021-22555-PipeVersion
 - https://github.com/veritas501/CVE-2022-0185-PipeVersion
