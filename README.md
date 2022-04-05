@@ -7,7 +7,7 @@ An exploit primitive in linux kernel inspired by DirtyPipe (CVE-2022-0847).
 
 复现完后，我开始思考，DirtyPipe这个洞为什么好用？难道随着DirtyPipe的修复，它就会像昙花一现一样，对将来的漏洞利用不具备任何学习价值吗？
 
-突然，我意识到，DirtyPipe所在结构体——`struct pipe_buffer`，似乎非常的耳熟。啊！它不正是哪个用`GFP_KERNEL_ACCOUNT`flag分配的，位于slab-1k中，且包含一个ops字段常被我拿来用于做KASLR leak和RIP劫持的结构体吗？
+突然，我意识到，DirtyPipe所在结构体——`struct pipe_buffer`，似乎非常的耳熟。啊！它不正是那个用`GFP_KERNEL_ACCOUNT`flag分配的，位于slab-1k中，且包含一个ops字段常被我拿来用于做KASLR leak和RIP劫持的结构体吗？
 
 随即我感到自己像个傻子，当时为什么要去修改pipe_buffer的ops做ROP？直接修改pipe_buffer的flags并配合splice不就直接做到任意文件写了嘛！这样就不用leak kaslr，也就不需要对不同内核版本做exploit适配，也不用管gadgets的事情，也不需要绕过SMEP，SMAP，KPTI等保护了。
 
@@ -25,6 +25,6 @@ An exploit primitive in linux kernel inspired by DirtyPipe (CVE-2022-0847).
 
 这样，在kernel >= 5.8中，我们只需修改pipe_buffer中splice页的`flag |= PIPE_BUF_FLAG_CAN_MERGE`即可（有能力可以顺便把offset和len改成0，这样就能从文件的开头开始写）；在kernel < 5.8中，需要先leak一下pipe_buffer中的anon_pipe_ops，然后将splice页的的ops改为anon_pipe_ops（因为<5.8版本中能够merge是看ops的）（有能力依然可以顺便把offset和len改成0）。
 
-
+</br>
 
 至于你问这样的话容器逃逸怎么做？我想要做的应该和CVE-2019-5736差不多吧 XD。
