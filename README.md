@@ -1,7 +1,7 @@
 # pipe-primitive
 An exploit primitive in linux kernel inspired by DirtyPipe (CVE-2022-0847).
 
-
+</br>
 
 前些日子，我像众多安全前辈那样对DirtyPipe（CVE-2022-0847）漏洞进行了学习和复现，深深感觉到这个洞的好用，这个洞始于一处内存的未初始化问题，终于对任意文件的修改，且中途不涉及KASLR的leak以及ROP、JOP等操作。因此无需绕过SMEP，SMAP等保护。
 
@@ -19,7 +19,7 @@ An exploit primitive in linux kernel inspired by DirtyPipe (CVE-2022-0847).
 
 由于在这之前并没有看到有人将其作为一种原语用于Linux kernel exploit中，所以本人就自作主张的将其称为“**Pipe Primitive**”吧 XD。
 
-
+</br>
 
 **总结一下**，就是需要获取到对Pipe结构体的修改能力，比如可以是slab-1k下的UAF，或是slab-1k下带偏移的（即不是按顺序的直接overflow）越界写。
 
